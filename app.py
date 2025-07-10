@@ -9,6 +9,7 @@ app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 users = {}
+online_users_count = 0
 
 def generate_hex_id():
     return ''.join(random.choices(string.hexdigits, k=6)).upper()
@@ -41,15 +42,21 @@ def upload():
 
 @socketio.on('connect')
 def handle_connect():
+    global online_users_count
     user_id = generate_hex_id()
     users[request.sid] = user_id
+    online_users_count += 1
     emit('assign_id', {'user_id': user_id})
     emit('system_message', {'msg': f'歡迎使用者 #{user_id} 加入聊天室！'}, broadcast=True)
+    socketio.emit('user_count_update', {'count': online_users_count})
 
 @socketio.on('disconnect')
 def handle_disconnect():
+    global online_users_count
     user_id = users.pop(request.sid, '未知用戶')
+    online_users_count -= 1
     emit('system_message', {'msg': f'使用者 #{user_id} 已離開。'}, broadcast=True)
+    socketio.emit('user_count_update', {'count': online_users_count})
 
 @socketio.on('chat_message')
 def handle_chat_message(json):

@@ -1,8 +1,7 @@
-
 body {
     font-family: 'Nunito', sans-serif;
-    background-color: #fce4ec; /* Light pink background */
-    background-image: url('https://www.transparenttextures.com/patterns/lovely-heart.png'); /* Subtle heart pattern */
+    background-color: #fce4ec;
+    background-image: url('https://www.transparenttextures.com/patterns/lovely-heart.png');
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,8 +22,8 @@ body {
 }
 
 header {
-    background-color: #f8bbd0; /* My Melody pink */
-    color: #4e342e; /* Brownish text */
+    background-color: #f8bbd0;
+    color: #4e342e;
     padding: 15px;
     text-align: center;
     border-bottom: 2px solid #f48fb1;
@@ -64,14 +63,14 @@ header p {
 }
 
 .message.my-message {
-    background-color: #f8bbd0; /* My Melody pink */
+    background-color: #f8bbd0;
     color: #4e342e;
     align-self: flex-end;
     text-align: right;
 }
 
 .message.other-message {
-    background-color: #fff9c4; /* Soft yellow */
+    background-color: #fff9c4;
     color: #5d4037;
     align-self: flex-start;
 }
@@ -110,7 +109,7 @@ header p {
 }
 
 button {
-    background-color: #f48fb1; /* Stronger pink */
+    background-color: #f48fb1;
     color: white;
     border: none;
     border-radius: 20px;

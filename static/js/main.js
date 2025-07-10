@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io();
     let myUserId = null;
@@ -9,14 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const uploadButton = document.getElementById('upload-button');
     const fileInput = document.getElementById('file-input');
     const userIdSpan = document.getElementById('user-id');
+    const onlineUsersCountSpan = document.getElementById('online-users-count');
 
-    // 1. 接收並設置自己的ID
     socket.on('assign_id', (data) => {
         myUserId = data.user_id;
         userIdSpan.textContent = `#${myUserId}`;
     });
 
-    // 2. 監聽系統訊息
     socket.on('system_message', (data) => {
         const p = document.createElement('p');
         p.className = 'system-message';
@@ -25,17 +23,14 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     });
 
-    // 3. 監聽聊天訊息
     socket.on('chat_message', (data) => {
         displayMessage(data.user_id, data.msg);
     });
 
-    // 4. 監聽媒體訊息
     socket.on('media_message', (data) => {
         displayMedia(data.user_id, data.url, data.type);
     });
 
-    // 顯示訊息的通用函數
     function displayMessage(userId, msg) {
         const msgDiv = document.createElement('div');
         msgDiv.classList.add('message');
@@ -60,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // 顯示媒體的通用函數
     function displayMedia(userId, url, type) {
         const msgDiv = document.createElement('div');
         msgDiv.classList.add('message');
@@ -92,7 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // 5. 發送訊息
+    socket.on('user_count_update', (data) => {
+        onlineUsersCountSpan.textContent = data.count;
+    });
+
     function sendMessage() {
         const message = messageInput.value.trim();
         if (message && myUserId) {
@@ -108,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 6. 處理文件上傳
     uploadButton.addEventListener('click', () => {
         fileInput.click();
     });
@@ -135,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Error uploading file!');
             });
         }
-        // Reset file input
         fileInput.value = '';
     });
 });
