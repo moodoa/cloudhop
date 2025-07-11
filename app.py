@@ -1,4 +1,8 @@
 import os
+import eventlet
+eventlet.monkey_patch()
+
+import os
 from flask import Flask, render_template, request, jsonify
 from flask_socketio import SocketIO, emit
 import random
@@ -6,7 +10,8 @@ import string
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+socketio = SocketIO(app, cors_allowed_origins="*", message_queue=REDIS_URL)
 
 users = {}
 online_users_count = 0
